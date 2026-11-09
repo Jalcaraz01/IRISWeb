@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hi, I'm IRIS! Come say hi.">
+  <title>IRIS ♡ Hi, I'm IRIS!</title>
+  <link rel="icon" type="image/png" href="assets/iris-logo.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="IRIS ♡ Hi, I'm IRIS!">
+  <meta property="og:description" content="Hi, I'm IRIS! Come say hi.">
+  <!-- og:image should be a full URL (https://your-site/assets/iris-logo.png) once the site is live -->
+  <meta property="og:image" content="assets/iris-logo.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========== Palette pulled from IRIS's model ========== */
+    :root {
+      --ink:#2b1a4d;          /* deep violet-navy (her hair shadows) */
+      --ink-soft:#6a5a8c;
+      --violet:#8b5cf6;       /* her eyes */
+      --magenta:#d946ef;      /* hair clip + headset glow */
+      --pink:#ff7ac0;
+      --blush:#ffd6ea;
+      --sky:#5cb8f5;          /* hair tips + jacket stripe */
+      --navy:#1c1f5c;         /* hair */
+      --paper:#fff9fd;
+      --card:#ffffff;
+      --line:#f0dcf3;
+      --grad:linear-gradient(120deg,#8b5cf6 0%,#d946ef 55%,#ff7ac0 100%);
+      --round:"M PLUS Rounded 1c", ui-rounded, "Hiragino Maru Gothic ProN", system-ui, sans-serif;
+      --hand:"Caveat", "Comic Sans MS", cursive;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; color:var(--ink); font:16px/1.65 var(--round); font-weight:500;
+      background:
+        radial-gradient(circle at 12% 8%, #f3e4ff 0, transparent 32%),
+        radial-gradient(circle at 92% 18%, #ffe0f1 0, transparent 30%),
+        radial-gradient(circle at 70% 85%, #e2f1ff 0, transparent 30%),
+        radial-gradient(#ead7f7 1.2px, transparent 1.3px) 0 0/22px 22px,
+        var(--paper);
+      -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; color:inherit; cursor:pointer; }
+    :focus-visible { outline:3px solid var(--magenta); outline-offset:3px; border-radius:12px; }
+    .wrap { width:min(1140px, calc(100% - 32px)); margin:auto; }
+    .hand { font-family:var(--hand); font-weight:700; }
+
+    /* ---------- floating sparkles ---------- */
+    .sparkles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .sparkles i { position:absolute; width:14px; height:14px; opacity:.55; animation:twinkle 4s ease-in-out infinite; }
+    .sparkles i::before { content:"✦"; color:var(--magenta); font-size:14px; font-style:normal; }
+    .sparkles i:nth-child(3n)::before { color:var(--sky); }
+    .sparkles i:nth-child(4n)::before { color:var(--pink); content:"♡"; }
+    @keyframes twinkle { 50% { transform:scale(1.5) rotate(20deg); opacity:.15; } }
+
+    /* ---------- header ---------- */
+    header { position:sticky; top:0; z-index:20; background:rgba(255,249,253,.8); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:2px dashed var(--line); }
+    nav { height:68px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:900; font-size:1.25rem; letter-spacing:.06em; }
+    .brand img { width:46px; height:46px; object-fit:contain; filter:drop-shadow(0 3px 6px rgba(217,70,239,.35)); transition:transform .25s; }
+    .brand:hover img { transform:rotate(-8deg) scale(1.08); }
+    .brand span { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .links { display:flex; gap:6px; }
+    .links a { padding:7px 14px; border-radius:999px; font-weight:700; font-size:.92rem; color:var(--ink-soft); transition:background .2s,color .2s; }
+    .links a:hover { background:var(--blush); color:var(--ink); }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:800; border:2.5px solid var(--ink); background:#fff; box-shadow:4px 4px 0 var(--ink); transition:transform .15s, box-shadow .15s; }
+    .btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--ink); }
+    .btn:active { transform:translate(2px,2px); box-shadow:2px 2px 0 var(--ink); }
+    .btn.pop { color:#fff; background:var(--grad); }
+    .btn.sm { padding:8px 16px; font-size:.9rem; box-shadow:3px 3px 0 var(--ink); }
+
+    main { position:relative; z-index:1; }
+    section { padding:88px 0; scroll-margin-top:68px; }
+    .kicker { display:inline-block; font-family:var(--hand); font-size:1.6rem; line-height:1.25; padding:.1em .45em .15em .1em; color:var(--magenta); transform:rotate(-3deg); }
+    h1, h2, h3 { font-weight:900; letter-spacing:-.01em; margin:0; }
+    h2 { font-size:clamp(2rem,4.4vw,3.2rem); line-height:1.1; margin:4px 0 14px; }
+    .sub { color:var(--ink-soft); max-width:560px; font-size:1.08rem; margin:0; }
+    .grad-text { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+    /* ---------- IRIS sprite (shared) ---------- */
+    .iris { position:relative; aspect-ratio:7/8; }
+    .iris img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; user-select:none; -webkit-user-drag:none; }
+    .iris .base { animation:bob 4.5s ease-in-out infinite; transform-origin:50% 100%; }
+    @keyframes bob { 50% { transform:translateY(-8px) rotate(-.6deg); } }
+    .iris.pop .base { animation:popIn .35s ease, bob 4.5s .35s ease-in-out infinite; }
+    @keyframes popIn { 40% { transform:scale(1.035) translateY(-6px); } }
+
+    .bubble { position:relative; background:#fff; border:2.5px solid var(--ink); border-radius:22px; padding:14px 18px; font-weight:700; font-size:1.05rem; box-shadow:5px 5px 0 rgba(43,26,77,.9); min-height:58px; }
+    .bubble::after { content:""; position:absolute; width:18px; height:18px; background:#fff; border:2.5px solid var(--ink); border-top:0; border-left:0; transform:rotate(45deg); }
+    .caret { display:inline-block; width:2px; height:1em; background:var(--magenta); vertical-align:-2px; margin-left:2px; animation:caret 1s steps(1) infinite; }
+    @keyframes caret { 50% { opacity:0; } }
+
+    /* ---------- hero ---------- */
+    .hero { padding:36px 0 40px; display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:center; min-height:calc(100vh - 68px); }
+    .hello { font-size:clamp(2.8rem,6.2vw,5.4rem); line-height:1; }
+    .nowrap { white-space:nowrap; }
+    .hero .sub { margin:18px 0 0; font-size:1.2rem; }
+    .acronym { margin-top:18px; display:flex; flex-wrap:wrap; gap:8px; }
+    .acronym span { padding:5px 12px; border-radius:999px; background:#fff; border:2px solid var(--line); font-size:.85rem; font-weight:700; color:var(--ink-soft); }
+    .acronym b { color:var(--magenta); }
+    .actions { display:flex; gap:14px; flex-wrap:wrap; margin-top:30px; }
+    .stage { position:relative; }
+    .stage::before { content:""; position:absolute; left:8%; right:8%; top:10%; bottom:2%; border-radius:50%; background:radial-gradient(circle at 50% 45%, rgba(217,70,239,.28), rgba(139,92,246,.14) 45%, transparent 70%); filter:blur(8px); }
+    .halo { position:absolute; inset:4% 6% auto; aspect-ratio:1; border-radius:50%; border:2px dashed rgba(139,92,246,.35); animation:spin 50s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .stage .iris { max-width:520px; margin-left:auto; }
+    .stage .bubble { position:absolute; left:-6%; top:6%; max-width:270px; z-index:3; }
+    .stage .bubble::after { right:28px; bottom:-11px; }
+    .mood-tag { position:absolute; right:4%; bottom:8%; z-index:3; padding:6px 14px; border-radius:999px; background:var(--ink); color:#fff; font-size:.8rem; font-weight:800; letter-spacing:.04em; }
+
+    /* ---------- about / profile ---------- */
+    .profile { display:grid; grid-template-columns:.85fr 1.15fr; gap:40px; align-items:center; }
+    .card { background:var(--card); border:2.5px solid var(--ink); border-radius:26px; box-shadow:7px 7px 0 var(--ink); }
+    .id-card { padding:28px; position:relative; overflow:hidden; transform:rotate(-1.5deg); }
+    .id-card::before { content:""; position:absolute; inset:0 0 auto; height:86px; background:var(--grad); }
+    .id-top { position:relative; display:flex; gap:16px; align-items:flex-end; }
+    .avatar { width:112px; height:112px; border-radius:50%; border:4px solid #fff; background:var(--blush); overflow:hidden; flex:none; box-shadow:0 0 0 2.5px var(--ink); }
+    .avatar { position:relative; }
+    .avatar img { position:absolute; width:250%; max-width:none; left:-86%; top:-12%; }
+    .id-top h3 { font-size:1.9rem; padding-bottom:6px; }
+    .id-top small { display:block; font-size:.78rem; color:var(--ink-soft); font-weight:700; letter-spacing:.02em; }
+    dl { margin:20px 0 0; display:grid; grid-template-columns:auto 1fr; gap:10px 16px; font-size:.97rem; }
+    dt { font-weight:900; color:var(--magenta); }
+    dd { margin:0; }
+    .stamp { position:absolute; right:18px; top:16px; color:#fff !important; border-color:#fff !important; font-family:var(--hand); font-size:1.4rem; color:var(--violet); transform:rotate(-8deg); border:2px solid var(--violet); padding:0 10px; border-radius:10px; opacity:.85; }
+    .traits { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:26px; }
+    .trait { padding:20px; border-radius:22px; background:#fff; border:2px solid var(--line); transition:transform .2s, border-color .2s; }
+    .trait:hover { transform:translateY(-4px) rotate(-.5deg); border-color:var(--pink); }
+    .trait .emo { font-size:1.6rem; }
+    .trait h3 { font-size:1.05rem; margin:6px 0 4px; }
+    .trait p { margin:0; color:var(--ink-soft); font-size:.95rem; }
+
+    /* ---------- moods ---------- */
+    .moods-head { text-align:center; }
+    .moods-head .sub { margin:0 auto; }
+    .moods { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-top:38px; }
+    .mood { position:relative; padding:14px 12px 16px; border-radius:24px; background:#fff; border:2.5px solid var(--ink); box-shadow:5px 5px 0 var(--ink); text-align:center; transition:transform .2s; }
+    .mood:hover, .mood:focus-visible { transform:translateY(-6px) rotate(-1deg); }
+    .mood .frame { position:relative; aspect-ratio:1; border-radius:18px; overflow:hidden; background:var(--bg,#f3e8ff); }
+    .mood .frame img { position:absolute; width:190%; left:-45%; top:-8%; transition:opacity .15s; }
+    .mood .frame img.alt { opacity:0; }
+    .mood:hover .frame img.alt, .mood:focus-visible .frame img.alt { opacity:1; }
+    .mood h3 { margin:12px 0 2px; font-size:1.05rem; }
+    .mood p { margin:0; font-family:var(--hand); font-size:1.25rem; line-height:1.15; color:var(--ink-soft); }
+
+    /* ---------- chat ---------- */
+    .chat-wrap { display:grid; grid-template-columns:.8fr 1.2fr; gap:30px; align-items:end; }
+    .chat-wrap .iris { width:100%; max-width:400px; margin:0 auto; }
+    .chat { padding:0; overflow:hidden; display:flex; flex-direction:column; height:520px; }
+    .chat-top { display:flex; align-items:center; gap:10px; padding:14px 18px; background:var(--grad); color:#fff; font-weight:800; border-bottom:2.5px solid var(--ink); }
+    .dot { width:10px; height:10px; border-radius:50%; background:#7dffb0; box-shadow:0 0 0 3px rgba(255,255,255,.35); }
+    .chat-top small { margin-left:auto; font-weight:700; opacity:.9; }
+    .log { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:10px; background:radial-gradient(#f3e3fb 1px, transparent 1.2px) 0 0/18px 18px; }
+    .msg { max-width:82%; padding:10px 15px; border-radius:18px; font-weight:600; line-height:1.5; animation:msgIn .25s ease; white-space:pre-line; }
+    @keyframes msgIn { from { opacity:0; transform:translateY(6px); } }
+    .msg.iris-msg { align-self:flex-start; background:#fff; border:2px solid var(--ink); border-bottom-left-radius:4px; }
+    .msg.you { align-self:flex-end; background:var(--ink); color:#fff; border-bottom-right-radius:4px; }
+    .msg.poem { font-family:var(--hand); font-size:1.35rem; line-height:1.3; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; padding:14px 16px; border-top:2px dashed var(--line); background:#fff; }
+    .chip { padding:8px 14px; border-radius:999px; border:2px solid var(--violet); background:#faf5ff; font-weight:800; font-size:.88rem; color:var(--violet); transition:background .15s,color .15s; }
+    .chip:hover { background:var(--violet); color:#fff; }
+    .chip:disabled { opacity:.4; cursor:default; }
+
+    /* ---------- watch me (demo) ---------- */
+    .demo-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:20px; margin-top:34px; }
+    .screen { position:relative; aspect-ratio:16/9; border-radius:22px; overflow:hidden; background:var(--navy); border:2.5px solid var(--ink); box-shadow:7px 7px 0 var(--ink); display:grid; place-items:center; }
+    .screen video { width:100%; height:100%; object-fit:cover; display:block; }
+    .shots { display:grid; grid-template-rows:1fr 1fr; gap:20px; }
+    .shots .screen { aspect-ratio:auto; min-height:150px; box-shadow:5px 5px 0 var(--ink); }
+    .screen img { width:100%; height:100%; object-fit:cover; }
+    .empty { position:absolute; inset:0; display:grid; place-content:center; text-align:center; color:#d9ccff; padding:20px; overflow:hidden; }
+    .tape { position:absolute; left:-10%; width:120%; height:28px; display:flex; align-items:center; background:#ffd60a; color:var(--ink); font-weight:900; font-size:.72rem; letter-spacing:.16em; white-space:nowrap; overflow:hidden; box-shadow:0 3px 0 rgba(0,0,0,.25); }
+    .tape::before, .tape::after { content:""; position:absolute; left:0; right:0; height:6px; background:repeating-linear-gradient(-45deg, var(--ink) 0 8px, #ffd60a 8px 16px); }
+    .tape::before { top:0; } .tape::after { bottom:0; }
+    .tape span { position:relative; padding-top:1px; }
+    .tape.t1 { top:13%; transform:rotate(-5deg); }
+    .tape.t2 { bottom:13%; transform:rotate(5deg); }
+    .empty .play { width:64px; height:64px; margin:0 auto 10px; border-radius:50%; background:var(--grad); display:grid; place-items:center; font-size:1.5rem; color:#fff; box-shadow:0 0 30px rgba(217,70,239,.6); }
+    .empty strong { display:block; color:#fff; }
+    .empty small { opacity:.75; }
+
+    /* ---------- note ---------- */
+    .note { position:relative; padding:34px 36px; background:#fffbe6; border:2.5px solid var(--ink); border-radius:6px 26px 26px 26px; box-shadow:7px 7px 0 var(--ink); transform:rotate(.6deg); max-width:780px; margin:auto; }
+    .note::before { content:""; position:absolute; top:-14px; left:50%; width:110px; height:28px; transform:translateX(-50%) rotate(-3deg); background:rgba(255,122,192,.45); border-radius:3px; }
+    .note h2 { font-size:1.8rem; }
+    .note p { margin:0 0 10px; color:#4a3a66; }
+    .note .sig { font-family:var(--hand); font-size:1.6rem; color:var(--magenta); margin:6px 0 0; padding-right:.3em; }
+
+    footer { position:relative; z-index:1; padding:36px 0 46px; text-align:center; color:var(--ink-soft); font-weight:700; }
+    footer .brand { justify-content:center; flex-direction:column; gap:8px; margin-bottom:10px; font-size:1.5rem; }
+    /* heartbeat: a "lub-dub" double beat with a glow. Tempo, strength and glow color follow IRIS's mood (set from the script via the --beat vars) */
+    footer .brand img { width:92px; height:auto; margin-top:10px; transform-origin:50% 36%;
+      --beat-dur:1.5s; --b1:1.05; --b2:1.03; --glow:167,139,250;
+      animation:heartbeat var(--beat-dur) ease-in-out infinite; }
+    @keyframes heartbeat {
+      0%   { transform:scale(1);        filter:drop-shadow(0 0 6px rgba(var(--glow),.35)); }
+      12%  { transform:scale(var(--b1)); filter:drop-shadow(0 0 20px rgba(var(--glow),.9)); }
+      24%  { transform:scale(1);        filter:drop-shadow(0 0 8px rgba(var(--glow),.45)); }
+      36%  { transform:scale(var(--b2)); filter:drop-shadow(0 0 16px rgba(var(--glow),.75)); }
+      52%  { transform:scale(1);        filter:drop-shadow(0 0 6px rgba(var(--glow),.35)); }
+      100% { transform:scale(1);        filter:drop-shadow(0 0 6px rgba(var(--glow),.35)); }
+    }
+    @media (prefers-reduced-motion: reduce) { footer .brand img { animation:none; filter:drop-shadow(0 0 10px rgba(var(--glow),.5)); } }
+
+    @media (max-width:900px) {
+      .links { display:none; }
+      .hero, .profile, .chat-wrap, .demo-grid { grid-template-columns:1fr; }
+      .hero { min-height:0; padding-top:24px; }
+      .stage { order:-1; max-width:420px; margin:0 auto; width:100%; }
+      .stage .iris { margin:0 auto; }
+      .stage .bubble { left:0; top:2%; max-width:220px; font-size:.95rem; }
+      .moods { grid-template-columns:repeat(2,1fr); }
+      .moods .mood:last-child { grid-column:1/-1; max-width:50%; justify-self:center; width:100%; }
+      .traits { grid-template-columns:1fr; }
+      .chat-wrap .iris { max-width:260px; }
+      .chat { height:480px; }
+      .shots { grid-template-rows:none; grid-template-columns:1fr 1fr; }
+      section { padding:64px 0; }
+      .id-card { transform:none; }
+      .note { padding:30px 22px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after { animation:none !important; transition:none !important; }
+      html { scroll-behavior:auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sparkles" aria-hidden="true" id="sparkles"></div>
+
+  <header><div class="wrap"><nav>
+    <a class="brand" href="#top" aria-label="IRIS home"><img class="logo" src="assets/iris-logo.png" alt=""><span>IRIS</span></a>
+    <div class="links"><a href="#me">About me</a><a href="#moods">My moods</a><a href="#chat">Say hi</a><a href="#watch">Watch me</a></div>
+    <a class="btn sm pop" href="#chat">Talk to me ♡</a>
+  </nav></div></header>
+
+  <main id="top">
+    <!-- ================= HERO ================= -->
+    <section class="wrap hero">
+      <div>
+        <span class="kicker">welcome to my website!</span>
+        <h1 class="hello">Hi! I'm <span class="nowrap"><span class="grad-text">IRIS</span></span></h1>
+        <p class="sub">Make yourself at home. I'm really glad you stopped by.</p>
+        <div class="acronym" aria-label="What IRIS stands for">
+          <span><b>I</b>nteractive</span><span><b>R</b>ecall</span><span>&amp;</span><span><b>I</b>ntuitive</span><span><b>S</b>peech</span>
+        </div>
+        <div class="actions"><a class="btn pop" href="#chat">Come say hi</a><a class="btn" href="#moods">See my moods</a></div>
+      </div>
+      <div class="stage" aria-label="IRIS character">
+        <div class="halo" aria-hidden="true"></div>
+        <div class="bubble" id="heroBubble" aria-live="polite"><span class="txt"></span><span class="caret"></span></div>
+        <div class="iris" id="heroIris"><img class="base" alt="IRIS saying hello"></div>
+        <span class="mood-tag" id="heroMood">mood: happy</span>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="me" class="wrap"><div class="profile">
+      <div class="card id-card">
+        <div class="id-top">
+          <div class="avatar"><img src="assets/sprites/happy-oe-cm.webp" alt=""></div>
+          <div><h3>IRIS</h3><small>Interactive Recall &amp; Intuitive Speech</small></div>
+        </div>
+        <dl>
+          <dt>Lives</dt><dd>Somewhere cozy, with lo-fi playing</dd>
+          <dt>Good at</dt><dd>Listening, and cheering people up</dd>
+          <dt>Hobby</dt><dd>Rewatching Spirited Away, journaling, and sunset playlists</dd>
+          <dt>Pet peeve</dt><dd>Unkindness for no reason</dd>
+          <dt>Look</dt><dd>Headphones on, always ready to listen</dd>
+        </dl>
+        <span class="stamp">♡ ME!</span>
+      </div>
+      <div>
+        <span class="kicker">a little about me</span>
+        <h2 class="grad-text">Let's get to know each other.</h2>
+        <p class="sub">Most evenings you'll find me with lo-fi on, a fruit milk tea nearby, and a good story to get lost in. Stay a while.</p>
+        <div class="traits">
+          <div class="trait"><div class="emo">🌸</div><h3>I'm a good listener</h3><p>I won't judge. Tell me the big stuff and the small stuff.</p></div>
+          <div class="trait"><div class="emo">🎧</div><h3>Lo-fi all evening</h3><p>Calm beats, piano melodies, and a cozy mood.</p></div>
+          <div class="trait"><div class="emo">🧋</div><h3>Fruit milk tea fan</h3><p>Sweet, light, and a tiny bit of self-care.</p></div>
+          <div class="trait"><div class="emo">🐱🐶</div><h3>Cats and dogs</h3><p>I adore every single one of them. They make my whole day.</p></div>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- ================= MOODS ================= -->
+    <section id="moods" class="wrap">
+      <div class="moods-head">
+        <span class="kicker">I wear my heart on my sleeve</span>
+        <h2>Pick a mood, any mood</h2>
+        <p class="sub">Click to see me react. Be nice, okay?</p>
+      </div>
+      <div class="moods" id="moodGrid"></div>
+    </section>
+
+    <!-- ================= CHAT ================= -->
+    <section id="chat" class="wrap">
+      <span class="kicker">don't be shy!</span>
+      <h2>Say hi to me!</h2>
+      <p class="sub">Pick something to say, and I'll answer.</p>
+      <div class="chat-wrap" style="margin-top:30px">
+        <div class="iris" id="chatIris"><img class="base" alt="IRIS reacting to the conversation"></div>
+        <div class="card chat">
+          <div class="chat-top"><span class="dot"></span>IRIS <small id="typing">online</small></div>
+          <div class="log" id="log" aria-live="polite"></div>
+          <div class="chips" id="chips"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WATCH ME ================= -->
+    <section id="watch" class="wrap">
+      <span class="kicker">What's this??</span>
+      <h2>Watch me in action</h2>
+      <p class="sub">Clips and screenshots coming soon.</p>
+      <div class="demo-grid">
+        <!-- Main recording: save as assets/demo.mp4 -->
+        <div class="screen" data-media="assets/demo.mp4" data-kind="video">
+          <div class="empty"><div class="tape t1"><span>UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION</span></div><div class="tape t2"><span>UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION</span></div><div class="play">▶</div><strong>Recording coming soon</strong></div>
+        </div>
+        <div class="shots">
+          <!-- Screenshots: save as assets/shot-1.png and assets/shot-2.png -->
+          <div class="screen" data-media="assets/shot-1.png" data-kind="img"><div class="empty"><div class="tape t1"><span>UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION</span></div><div class="tape t2"><span>UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION</span></div><strong>Screenshot</strong></div></div>
+          <div class="screen" data-media="assets/shot-2.png" data-kind="img"><div class="empty"><div class="tape t1"><span>UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION</span></div><div class="tape t2"><span>UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION ✦ UNDER CONSTRUCTION</span></div><strong>Screenshot</strong></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= NOTE (short project summary) ================= -->
+    <section class="wrap">
+      <div class="note">
+        <span class="kicker" style="font-size:1.3rem">psst...</span>
+        <h2>Where I come from</h2>
+        <p>A team of students made me because they wanted a friendly voice to talk to. They gave me headphones, a soft spot for heartwarming stories, and a lot of opinions about milk tea.</p>
+        <p class="sig">— IRIS (and my humans ♡)</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand"><img class="logo" src="assets/iris-logo.png" alt=""><span>IRIS</span></div>
+    <p>Made with love, lo-fi, and a lot of milk tea ✦</p>
+  </footer>
+
+  <script>
+  /* =====================================================================
+     EDIT HERE ▸ logo, sprites, and IRIS's lines
+     ===================================================================== */
+  const LOGO_SRC = "assets/iris-logo.png";          // swap the logo by changing this or replacing the file
+  const SPRITE = (mood, eyes, mouth) => `assets/sprites/${mood}-${eyes}-${mouth}.webp`;
+  // sprite files: {happy|neutral|angry|sad|scared}-{oe|ce}-{om|cm}.webp
+
+  // time of day (visitor's local clock) for her greeting
+  const HOUR = new Date().getHours();
+  const PART = HOUR >= 5 && HOUR < 12 ? "morning" : HOUR < 17 && HOUR >= 12 ? "afternoon" : HOUR >= 17 && HOUR < 22 ? "evening" : "night";
+  const GREETING = {
+    morning:   "Good morning!!",
+    afternoon: "Good afternoon!!",
+    evening:   "Good evening!! My favorite time of day.",
+    night:     "Oh, you're up late! Hi!!",
+  }[PART];
+  // oe/ce = open/closed eyes, om/cm = open/closed mouth
+
+  // Lines IRIS cycles through in the hero bubble. [mood, text]
+  const HERO_LINES = [
+    ["neutral", GREETING],
+    ["happy",   "Oh! You found my website. Welcome in ♡"],
+    ["neutral", "Scroll around, take your time."],
+    ["happy",   "Go on, poke me. I dare you."],
+    ["happy",   "Come say hi in the chat ↓ I'll put on some lo-fi."],
+  ];
+
+  // DRAFT lines: replace these with real things IRIS has said
+  // (ask Justin, Steve, or Evan for examples when you run her).
+  const CHAT = {
+    hi:     { label: "Hi IRIS!",               you: "Hi IRIS!",                     mood: "happy",   text: `Hello!! You came to talk to me? That already makes my ${PART} better.` },
+    how:    { label: "How are you?",           you: "How are you today?",           mood: "neutral", text: "I'm doing pretty well, thank you! Feeling calm and cozy. How about you? Tell me everything." },
+    rough:  { label: "I had a rough day",      you: "I had a really rough day. I tried so hard and it still feels like I got nowhere.", mood: "sad", text: "I'm sorry today felt so discouraging. All that effort didn't mean nothing, even if it feels that way right now. You don't have to figure everything out tonight. Take a short break, drink some water, and let yourself rest. Small progress still counts." },
+    joke:   { label: "Tell me a joke",         you: "Tell me a joke!",              mood: "happy",   text: [
+      "I once spent an entire evening trying to teach a cat to high-five.\nIt was not interested.\n…Okay, that one's silly, but I love silly.",
+      "Why did the milk tea break up with the coffee?\nIt wanted someone a little sweeter.\n…Okay, I'm a little biased.",
+      "Why did the dog sit in the shade?\nIt didn't want to be a hot dog.\n…I'll admit that one's pretty silly.",
+      "What do you call a cat that plays the drums?\nA purr-cussionist!\n…Okay, okay, I'll stop."
+    ] },
+    poem:   { label: "Read me a poem",         you: "Can you read me a poem?",      mood: "happy",   poem: true, text: [
+      "Rain taps the window, soft and slow,\nthe evening hums in blue.\nA warm cup and a quiet song,\nand room for you, too.",
+      "The kettle sings, the clouds drift by,\na cat yawns on the chair.\nThe day lets go of all its noise,\nand there's cozy in the air.",
+      "The sun goes down in gold and rose,\nthe wind moves through the trees.\nSomewhere a soft piano plays,\nand all the world's at ease.",
+      "Tonight there's no rush, no race,\njust blankets, tea, and rain.\nIf your day was heavy, set it down,\nthen we can start again."
+    ] },
+    like:   { label: "What do you like?",      you: "What do you like?",            mood: "neutral", text: "Light pink, Spirited Away, homemade pasta with friends, and rainy evenings. And hearing about your day, if you feel like sharing." },
+    bot:    { label: "Are you a chatbot?",     you: "Wait, are you just a chatbot?", mood: "angry",   text: "WHAT did you just call me?! I'm IRIS, not some chatbot. Take it back!" },
+    boo:    { label: "Boo!",                   you: "BOO!",                         mood: "scared",  text: "AAH— you scared me!! …Okay, okay, that was kind of funny." },
+    bye:    { label: "Bye!",                   you: "I gotta go, bye!",             mood: "sad",     text: "Take care of yourself, okay? Drink some water and get some rest." },
+  };
+
+  // Mood cards (captions in IRIS's voice)
+  const MOODS = [
+    ["happy",   "Happy",   "When you tell me something good that happened.", "#fde8f6", "Yay!! Come on, tell me everything, I want to hear all of it!"],
+    ["neutral", "Chill",   "Lo-fi on, blanket out, listening.",  "#efe8ff", "Mmm, just relaxing for now. Lo-fi's on, no rush at all."],
+    ["angry",   "Angry",   "When someone is cruel for no reason.", "#ffe4ec", "Hmph! People shouldn't be unkind for no reason."],
+    ["sad",     "Sad",     "When a friend is hurting.",          "#e3f0ff", "I really hate seeing people hurt…"],
+    ["scared",  "Scared",  "When something startles me out of nowhere.", "#eef0f5", "EEK!! What was that?! Did you hear that??"],
+  ];
+  /* ===================================================================== */
+
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll("img.logo").forEach(i => i.src = LOGO_SRC);
+
+  // preload every sprite so swaps don't flicker
+  const ALL = [];
+  ["happy","neutral","angry","sad","scared"].forEach(m => ["oe","ce"].forEach(e => ["om","cm"].forEach(o => ALL.push(SPRITE(m,e,o)))));
+  ALL.forEach(src => { const i = new Image(); i.src = src; });
+
+  // ---- footer heartbeat follows IRIS's mood: [seconds per beat, lub size, dub size, glow rgb] ----
+  const BEATS = {
+    happy:   [1.0,  1.09, 1.06, "255,105,180"],  // warm and bouncy
+    neutral: [1.5,  1.05, 1.03, "167,139,250"],  // slow and relaxed
+    angry:   [0.65, 1.13, 1.09, "239,68,68"],    // fast and hard
+    sad:     [2.1,  1.04, 1.02, "96,165,250"],   // slow and faint
+    scared:  [0.45, 1.07, 1.05, "148,163,184"],  // rapid and shallow
+  };
+  const beatImg = document.querySelector("footer .brand img");
+  function setBeat(mood) {
+    const b = BEATS[mood]; if (!b || !beatImg) return;
+    beatImg.style.setProperty("--beat-dur", b[0] + "s");
+    beatImg.style.setProperty("--b1", b[1]);
+    beatImg.style.setProperty("--b2", b[2]);
+    beatImg.style.setProperty("--glow", b[3]);
+  }
+
+  // ---- an animated IRIS: blinks on her own, mouth moves while she talks ----
+  class Iris {
+    constructor(el) {
+      this.img = el.querySelector("img.base"); this.el = el;
+      this.mood = "neutral"; this.eyes = "oe"; this.mouth = "cm"; this.talking = false;
+      this.render();
+      if (!reduced) this.blinkLoop();
+    }
+    render() { this.img.src = SPRITE(this.mood, this.eyes, this.mouth); }
+    setMood(m) {
+      setBeat(m);
+      if (m === this.mood) return;
+      this.mood = m; this.render();
+      this.el.classList.remove("pop"); void this.el.offsetWidth; this.el.classList.add("pop");
+    }
+    blinkLoop() {
+      setTimeout(() => {
+        if (this.eyes === "oe") { this.eyes = "ce"; this.render(); setTimeout(() => { this.eyes = "oe"; this.render(); }, 140); }
+        this.blinkLoop();
+      }, 2600 + Math.random() * 2600);
+    }
+    // types text into target while flapping her mouth
+    say(target, text, mood, speed = 26) {
+      return new Promise(res => {
+        if (this._res) this._res(); this._res = res;   // let an interrupted line finish cleanly
+        this.setMood(mood);
+        clearInterval(this.flap); clearInterval(this.typer);
+        if (reduced) { target.textContent = text; return res(); }
+        target.textContent = ""; let i = 0;
+        this.flap = setInterval(() => { this.mouth = this.mouth === "om" ? "cm" : "om"; this.render(); }, 130);
+        this.typer = setInterval(() => {
+          target.textContent = text.slice(0, ++i);
+          if (i >= text.length) { clearInterval(this.typer); clearInterval(this.flap); this.mouth = "cm"; this.render(); res(); }
+        }, speed);
+      });
+    }
+  }
+
+  // ---- hero: rotates through moods + lines ----
+  const hero = new Iris(document.getElementById("heroIris"));
+  const heroTxt = document.querySelector("#heroBubble .txt");
+  const heroMood = document.getElementById("heroMood");
+  let h = 0;
+  let holdUntil = 0, holdToken = 0;   // pause the auto-rotation while a clicked mood is being read
+  async function heroLoop() {
+    if (Date.now() < holdUntil) { setTimeout(heroLoop, Math.max(holdUntil - Date.now(), 500)); return; }
+    const [mood, text] = HERO_LINES[h++ % HERO_LINES.length];
+    heroMood.textContent = "mood: " + (mood === "neutral" ? "chill" : mood);
+    await hero.say(heroTxt, text, mood, 40);
+    setTimeout(heroLoop, 3400);
+  }
+
+  heroLoop();
+
+  // IRIS reacts in the hero bubble and the auto-rotation pauses while it's read
+  function heroReact(m, text, speed = 32) {
+    heroMood.textContent = "mood: " + (m === "neutral" ? "chill" : m);
+    const t = ++holdToken; holdUntil = Date.now() + 60000;
+    hero.say(heroTxt, text, m, speed).then(() => { if (t === holdToken) holdUntil = Date.now() + 8000; });
+  }
+
+  // ---- poke her: she starts startled, warms up, then gets annoyed ----
+  const POKES = [
+    ["scared", "Eek! Oh, it's just you."],
+    ["happy",  "Hehe, that tickles!"],
+    ["happy",  "Hi hi! I'm right here."],
+    ["neutral","Okay, you've got my attention."],
+    ["angry",  "Hey!! Quit poking me!"],
+    ["angry",  "I mean it!! …Hmph."],
+  ];
+  const heroEl = document.getElementById("heroIris");
+  let pokes = 0, pokeReset;
+  heroEl.setAttribute("role", "button"); heroEl.tabIndex = 0;
+  heroEl.setAttribute("aria-label", "Poke IRIS"); heroEl.title = "Poke me!"; heroEl.style.cursor = "pointer";
+  function poke() {
+    const i = pokes < POKES.length ? pokes : POKES.length - 2 + (pokes % 2);   // after the list, alternate the two angry lines
+    pokes++;
+    clearTimeout(pokeReset); pokeReset = setTimeout(() => { pokes = 0; }, 6000);
+    heroEl.classList.remove("pop"); void heroEl.offsetWidth; heroEl.classList.add("pop");
+    heroReact(POKES[i][0], POKES[i][1], 20);
+  }
+  heroEl.addEventListener("click", poke);
+  heroEl.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); poke(); } });
+
+  // ---- mood cards ----
+  const grid = document.getElementById("moodGrid");
+  MOODS.forEach(([m, name, cap, bg, react]) => {
+    const card = document.createElement("button");
+    card.className = "mood"; card.style.setProperty("--bg", bg);
+    card.setAttribute("aria-label", `${name}: ${cap}. Show IRIS this mood.`);
+    card.innerHTML = `<div class="frame"><img src="${SPRITE(m,"oe","cm")}" alt=""><img class="alt" src="${SPRITE(m,"ce","om")}" alt=""></div><h3>${name}</h3><p>${cap}</p>`;
+    card.addEventListener("click", () => { heroReact(m, react); document.getElementById("top").scrollIntoView({ behavior: reduced ? "auto" : "smooth" }); });
+    grid.appendChild(card);
+  });
+
+  // ---- chat ----
+  const chatIris = new Iris(document.getElementById("chatIris"));
+  const log = document.getElementById("log"), chips = document.getElementById("chips"), typing = document.getElementById("typing");
+  let busy = false;
+  function add(cls, text) { const d = document.createElement("div"); d.className = "msg " + cls; d.textContent = text; log.appendChild(d); log.scrollTop = log.scrollHeight; return d; }
+  async function irisSays(entry) {
+    busy = true; chips.querySelectorAll("button").forEach(b => b.disabled = true);
+    typing.textContent = "typing…";
+    let text = entry.text;
+    if (Array.isArray(text)) { let i; do { i = Math.floor(Math.random() * text.length); } while (i === entry._last && text.length > 1); entry._last = i; text = text[i]; }
+    const bubble = add("iris-msg" + (entry.poem ? " poem" : ""), "");
+    const obs = new MutationObserver(() => log.scrollTop = log.scrollHeight); obs.observe(bubble, { childList: true, characterData: true, subtree: true });
+    await chatIris.say(bubble, text, entry.mood, 22);
+    obs.disconnect(); typing.textContent = "online"; busy = false;
+    chips.querySelectorAll("button").forEach(b => b.disabled = false);
+  }
+  Object.entries(CHAT).forEach(([key, e]) => {
+    if (key === "hi") return;
+    const b = document.createElement("button"); b.className = "chip"; b.textContent = e.label;
+    b.onclick = () => { if (busy) return; add("you", e.you); setTimeout(() => irisSays(e), 350); };
+    chips.appendChild(b);
+  });
+  // greet once the chat scrolls into view
+  let greeted = false;
+  new IntersectionObserver(([en]) => { if (en.isIntersecting && !greeted) { greeted = true; irisSays(CHAT.hi); } }, { threshold: .35 }).observe(log);
+
+  // ---- watch-me slots: show media when the file exists ----
+  document.querySelectorAll(".screen[data-media]").forEach(s => {
+    const src = s.dataset.media;
+    if (s.dataset.kind === "video") {
+      const v = document.createElement("video"); v.controls = true; v.preload = "metadata"; v.playsInline = true;
+      v.onloadedmetadata = () => { s.replaceChildren(v); };
+      v.src = src;
+    } else {
+      const i = new Image(); i.alt = "Screenshot of IRIS"; i.onload = () => s.replaceChildren(i); i.src = src;
+    }
+  });
+
+  // ---- sparkles ----
+  const sp = document.getElementById("sparkles");
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement("i");
+    s.style.left = Math.random() * 100 + "%"; s.style.top = Math.random() * 100 + "%";
+    s.style.animationDelay = (-Math.random() * 4) + "s"; s.style.transform = `scale(${.6 + Math.random() * .8})`;
+    sp.appendChild(s);
+  }
+  </script>
+</body>
+</html>
